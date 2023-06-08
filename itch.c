@@ -4,6 +4,7 @@
 // uncomment to disable assert()
 // #define NDEBUG
 #include <assert.h>
+#include <string.h>
 
 void fill_tv_itch5(char msg_type, void* data, size_t data_len, tv_itch5_s *itch_s){
 	// write all valid signals to 0		
@@ -24,3 +25,6 @@ void fill_tv_itch5(char msg_type, void* data, size_t data_len, tv_itch5_s *itch_
 	assert(data_len == exp_len );
 }
 
+void print_tv_itch5_msg_type(tv_itch5_s * itch_msg){
+	#include "gen/itch_msg_print_type.h"
+}
