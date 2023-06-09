@@ -33,7 +33,7 @@ int read_bin_file(FILE *fptr, uint32_t n){
 		ret = (size_t)fill_tv_itch5( type, buff, len-1, &itch_msg);
 		if ( ret ) return 1;
 
-		print_tv_itch5_msg_type(&itch_msg);
+		print_tv_itch5(&itch_msg);
 		if ( feof( fptr ) )return 0;
 	}
 	return 0;

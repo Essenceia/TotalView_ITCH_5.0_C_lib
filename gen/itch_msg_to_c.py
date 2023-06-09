@@ -9,6 +9,7 @@ ITCH_MSG_STRUCT_INNER_H = "itch_msg_struct_inner.h"
 ITCH_MSG_STRUCT_HEAD_H = "itch_msg_struct_head.h"
 ITCH_MSG_FILL_CASE_H = "itch_msg_fill_case.h"
 ITCH_MSG_PRINT_TYPE_H = "itch_msg_print_type.h"
+ITCH_MSG_PRINT_H = "itch_msg_print.h"
 ITCH_ENUM_H = "itch_msg_enum.h"
 
 SIG_PREFIX = "itch_"
@@ -18,7 +19,7 @@ CASE_D_PTR = "data"
 
 PRINT_S_PRT = "itch_msg"
 
-def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, print_f):
+def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, print_type_f, print_f):
     #sig_name = SIG_PREFIX + msg_name + "_v_o"
     sig_name = SIG_PREFIX + msg_name + "_v"
     inst_name = SIG_PREFIX + msg_name + "_data"
@@ -27,10 +28,11 @@ def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, prin
     struct_f.write("\nstruct {\n")
     struct_head_f.write(sig_type+" "+sig_name+";\n")
     case_f.write("\ncase '"+msg_id+"': \n"+ db_check+ ";\n"+ CASE_S_PTR+"->"+ sig_name +"=1;\nmemcpy(&"+CASE_S_PTR+"->"+inst_name +","+ CASE_D_PTR +","+str(int(msg_len)-1) +");\nbreak;\n ")
-    print_f.write("if("+PRINT_S_PRT+"->"+sig_name+') printf("Message type : '+msg_name+'\\n");\n')
+    print_type_f.write("if("+PRINT_S_PRT+"->"+sig_name+') printf("Message type : '+msg_name+'\\n");\n')
+    print_f.write("if("+PRINT_S_PRT+"->"+sig_name+') { \nprintf("Message type : '+msg_name+'\\n");\n')
     return inst_name
 
-def parse_field(msg_name, field, struct_f):
+def parse_field(msg_name, field, struct_f,inst_name, print_f):
     f_name = field['@name']
     f_len  = field['@len']
     f_offset = field['@offset']
@@ -39,7 +41,10 @@ def parse_field(msg_name, field, struct_f):
     if not( f_name == "message_type" ):
         sig_name = SIG_PREFIX+msg_name+"_"+f_name
         struct_f.write(f_type+" "+sig_name+";\n")
-
+        if "e" not in f_type :
+            print_f.write("print_"+f_type+'("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
+        else:
+            print_f.write('print_char_t("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
     return sig_name
 
 def parse_enum(enums, enum_f):
@@ -63,7 +68,8 @@ def main():
     struct_f      = open(ITCH_MSG_STRUCT_INNER_H,"w")
     struct_head_f = open(ITCH_MSG_STRUCT_HEAD_H,"w")
     case_f = open(ITCH_MSG_FILL_CASE_H,"w")
-    print_f = open(ITCH_MSG_PRINT_TYPE_H,"w")
+    print_type_f = open(ITCH_MSG_PRINT_TYPE_H,"w")
+    print_f = open(ITCH_MSG_PRINT_H,"w")
     enum_f = open(ITCH_ENUM_H,"w")
    
     # Parse XML
@@ -79,16 +85,17 @@ def main():
         msg_name=struct['@name']
         msg_id=struct['@id']
         msg_len=struct['@len']
-        inst_name = parse_valid(msg_name , msg_id, msg_len, struct_f, struct_head_f, case_f, print_f )
+        inst_name = parse_valid(msg_name , msg_id, msg_len, struct_f, struct_head_f, case_f, print_type_f, print_f )
         # clear list
         for field in struct['Field']:
             #print(type(field))
             if type(field) is dict:
-                parse_field(msg_name, field, struct_f)
+                parse_field(msg_name, field,struct_f, inst_name, print_f)
             else:
                 assert(0)
         # add end of struct
         struct_f.write("}"+inst_name+";\n")
+        print_f.write("}\n")
     parse_enum(content['Model']['Enums']['Enum'], enum_f)
     print("C code generated")
 

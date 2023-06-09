@@ -1,8 +1,5 @@
 #include "itch.h"
 #include <stddef.h>
-#include <stdio.h>
-// uncomment to disable assert()
-// #define NDEBUG
 #include <assert.h>
 #include <string.h>
 
@@ -34,3 +31,9 @@ int fill_tv_itch5(char msg_type, void* data, size_t data_len, tv_itch5_s *itch_s
 void print_tv_itch5_msg_type(const tv_itch5_s * itch_msg){
 	#include "gen/itch_msg_print_type.h"
 }
+
+void print_tv_itch5(const tv_itch5_s* itch_msg){
+	printf("\n");
+	#include "gen/itch_msg_print.h"
+}
+

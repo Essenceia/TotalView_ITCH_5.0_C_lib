@@ -21,7 +21,7 @@ gen_flag : ${GEN_DIR}/${XML} ${GEN_DIR}/${SCRIPT}
 	touch gen_flag
 
 
-itch.o: type.h itch_s.h gen_flag 
+itch.o: type.h itch.h itch.c itch_s.h gen_flag 
 	$(CC) -c itch.c $(FLAGS) 
 
 lib: itch.o file.o
