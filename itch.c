@@ -18,8 +18,8 @@ int fill_tv_itch5(char msg_type, void* data, size_t data_len, tv_itch5_s *itch_s
 	switch( msg_type ){
 		#include "gen/itch_msg_fill_case.h"
 		default :
+			fprintf(stderr,"Error : Unknown itch message type %c\n", msg_type);
 			assert(0); 
-			printf("Error : Unknown itch message type %c\n", msg_type);
 			return 1;
 			break;
 	}
