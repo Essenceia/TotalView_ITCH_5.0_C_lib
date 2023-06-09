@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <string.h>
 
-void fill_tv_itch5(char msg_type, void* data, size_t data_len, tv_itch5_s *itch_s){
+int fill_tv_itch5(char msg_type, void* data, size_t data_len, tv_itch5_s *itch_s){
 	// write all valid signals to 0		
 	// valid signals are at the top of the struct, this is a packed struct
 	// calculate the offset to the first data anonymous struct and use it to
@@ -20,11 +20,17 @@ void fill_tv_itch5(char msg_type, void* data, size_t data_len, tv_itch5_s *itch_
 		default :
 			assert(0); 
 			printf("Error : Unknown itch message type %c\n", msg_type);
+			return 1;
 			break;
-	} 
-	assert(data_len == exp_len );
+	}
+ 
+	if ( data_len != exp_len ){
+		assert(0);
+		return 1;
+	}
+	return 0;
 }
 
-void print_tv_itch5_msg_type(tv_itch5_s * itch_msg){
+void print_tv_itch5_msg_type(const tv_itch5_s * itch_msg){
 	#include "gen/itch_msg_print_type.h"
 }

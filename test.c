@@ -11,7 +11,9 @@ int main (int argc, char **argv)
   	uint32_t n = LINE_CNT;
 	char *fpath = NULL;
  	int c;
+	int err;
 	FILE *fptr;
+	
 
 
 	while ((c = getopt (argc, argv, "n:f:")) != -1)
@@ -40,12 +42,12 @@ int main (int argc, char **argv)
 	// open file
 	fptr = fopen(fpath,"rb");
 	if ( fptr != NULL ){
-		read_bin_file(fptr, n);
+		err = read_bin_file(fptr, n);
 		fclose(fptr);
 	}else {
 		fprintf(stderr,"File open failed\n");
 		return 1;
 	}
-	return 0;
+	return err;
 }
 
