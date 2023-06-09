@@ -39,7 +39,7 @@ To clean :
 make clean
 ```
 
-## Run test
+### Run test
 
 The `test` program takes in 2 command line arguments :
 
@@ -52,11 +52,12 @@ Command :
 ./test -n <number_msg> -f <file_path>
 ```
 
-## Configuration 
+### Configuration 
 
-Behavior can be configure using the following macro's :
+Test behavior can be configure using the following macro's :
 
 - `LINE_CNT` : default number of lines to be analysed if no `-n` argument is provided, default `4000`
+
 
 # License
 
