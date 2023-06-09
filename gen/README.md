@@ -6,7 +6,7 @@ We generate it using and xml file outlining the itch message format and a small 
 
 Usage :
 ```
-python itch_msg_to_rtl.py nasdaq_totalview_itch.xml
+python itch_msg_to_c.py nasdaq_totalview_itch.xml
 ```
 
 ## ITCH message xml file

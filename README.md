@@ -57,3 +57,8 @@ Command :
 Behavior can be configure using the following macro's :
 
 - `LINE_CNT` : default number of lines to be analysed if no `-n` argument is provided, default `4000`
+
+# License
+
+This code is licensed under CC BY-NC 4.0, to obtain a commercial license
+reach out to the author .
