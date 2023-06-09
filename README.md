@@ -10,7 +10,7 @@ these can be downloaded at https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/
 
 ## Build library 
 
-To build the static library `itch.a` : 
+To build the static library `libitch.a` : 
 
 ```
 make lib

@@ -25,7 +25,7 @@ itch.o: type.h itch_s.h gen_flag
 	$(CC) -c itch.c $(FLAGS) 
 
 lib: itch.o file.o
-	ar rcs itch.a itch.o file.o 
+	ar rcs libitch.a itch.o file.o 
 
 clean:
 	rm gen_flag

@@ -1,10 +1,10 @@
 #include "file.h"
 #include <stdio.h>
-#include <byteswap.h>
+#define _BSD_SOURCE             /* See feature_test_macros(7) */
+#include <endian.h>
 #include "itch.h"
 
 #define ITCH_MSG_MAX_LEN 50 
-
 int read_bin_file(FILE *fptr, uint32_t n){
 	uint32_t i;
 	uint16_t len; // payload lenght ( big endian )
@@ -16,7 +16,7 @@ int read_bin_file(FILE *fptr, uint32_t n){
 	for( i = 0; i < n; i++){
 		ret = fread(&len, sizeof(len), 1, fptr);
 		// convert to little endiant
-		len = bswap_16(len);
+		len = be16toh(len);
 
 		ret = fread(&type, sizeof(type), 1, fptr);
 		if ( !ret ) return 1;	
@@ -37,4 +37,16 @@ int read_bin_file(FILE *fptr, uint32_t n){
 		if ( feof( fptr ) )return 0;
 	}
 	return 0;
+}
+
+
+size_t get_next_bin_msg(FILE *fptr, uint8_t *buff, size_t buff_len){
+	size_t ret = 0; // next message size
+	uint16_t len;
+	fread(&len, sizeof(len),1, fptr);
+	len = be16toh(len);// convert from big endian to whatever we are using
+	if ( len <= buff_len ){
+		ret = fread(buff, sizeof(uint8_t), len, fptr);
+	}
+	return ret; 
 }
