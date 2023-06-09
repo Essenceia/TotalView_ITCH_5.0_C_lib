@@ -24,16 +24,10 @@ def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, prin
     inst_name = SIG_PREFIX + msg_name + "_data"
     sig_type = "bool"
     db_check = "exp_len = "+str(int(msg_len)-1)
-    # get the ascii code for the message type
-    # msg_id_i = msg_id
-    # exp_msg_cnt = math.ceil(int(msg_len)/MOLD_MSG_LEN)
-    # sig_logic = "("+ITCH_msg_id_SIG + " == 'd"+str(msg_id_i)+") & ("+MOLD_MSG_CNT_SIG+" == 'd"+str(exp_msg_cnt)+")"
-
-    #flat_f.write("\n"+sig_type+" "+sig_name+" : "+msg_len+",\n")
     struct_f.write("\nstruct {\n")
     struct_head_f.write(sig_type+" "+sig_name+";\n")
     case_f.write("\ncase '"+msg_id+"': \n"+ db_check+ ";\n"+ CASE_S_PTR+"->"+ sig_name +"=1;\nmemcpy(&"+CASE_S_PTR+"->"+inst_name +","+ CASE_D_PTR +","+str(int(msg_len)-1) +");\nbreak;\n ")
-    print_f.write("if("+PRINT_S_PRT+"->"+sig_name+') printf("Message type : '+msg_name+'");\n')
+    print_f.write("if("+PRINT_S_PRT+"->"+sig_name+') printf("Message type : '+msg_name+'\\n");\n')
     return inst_name
 
 def parse_field(msg_name, field, struct_f):
@@ -44,15 +38,6 @@ def parse_field(msg_name, field, struct_f):
     sig_name = ""
     if not( f_name == "message_type" ):
         sig_name = SIG_PREFIX+msg_name+"_"+f_name
-        #sig_dim = "["+f_len+"*LEN-1:0]"
-        #sig_logic = MOLD_MSG_DATA_SIG+"[LEN*"+f_offset+"+LEN*"+f_len+"-1:LEN*"+f_offset+"]"
-
-        #port_f.write("output logic "+sig_dim+" "+sig_name+",\n")
-        #assign_f.write("assign "+sig_name+" = "+sig_logic+";\n") 
-        #tb_port_f.write("."+sig_name+"("+sig_name+"),\n")
-        #tb_sig_f.write("logic "+sig_dim+" "+sig_name+";\n")
-        
-        #flat_f.write(f_type+" "+sig_name+" : "+f_len+",\n")
         struct_f.write(f_type+" "+sig_name+";\n")
 
     return sig_name
@@ -62,12 +47,6 @@ def parse_enum(enums, enum_f):
         e_name = enum['@name']
         e_type = enum['@type']
         enum_f.write("typedef "+e_type+" "+e_name+";\n")
-       # enum_f.write("enum "+e_name+" : "+e_type+" {")
-       # for val in enum['Value']:
-       #     v_name = val['@name']
-       #     v_val=val['@value']
-       #     enum_f.write(v_name+" = '"+v_val+"',")
-       # enum_f.write("};\n");
 
 def main():
     # Parse args.

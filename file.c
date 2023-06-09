@@ -16,8 +16,10 @@ int read_bin_file(FILE *fptr, uint32_t n){
 		// convert to little endiant
 		len = bswap_16(len);
 		ret = fread(&type, sizeof(type), 1, fptr);
-		
+	
+		#ifdef DEBUF	
 		printf("len %d,type %c, ret %ld\n", len, type,ret);
+		#endif
 		// read rest of message
 		ret = fread(buff, sizeof(buff[0]), len-1, fptr);
 		fill_tv_itch5( type, buff, len-1, &itch_msg);
