@@ -3,9 +3,23 @@
 Small library to parse blobs of itch transactions into a structure.
 Most of this code was generated, the generation code and generated content can
 be found in `gen`.
+Data endianness of the structures variables is the same as in the original packet.
 
 For validation purposes we can read the binary files provided by the nasdaq exchange, 
 these can be downloaded at https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/ 
+
+## Build library 
+
+To build the static library `itch.a` : 
+
+```
+make lib
+```
+
+(optional) Enable debug :
+```
+make lib debug=1
+```
 
 ## Build test
 
@@ -25,11 +39,11 @@ To clean :
 make clean
 ```
 
-## Usage
+## Run test
 
-The `test` program takes in 2 command line argumets :
+The `test` program takes in 2 command line arguments :
 
-`-f` path to the location of the marketdata itch binary file provided by nasdaq for testing purposes.
+`-f` path to the location of the market data itch binary file provided by nasdaq for testing purposes.
 
 `-n` number of itch messages to decode from the binary file
 

@@ -1,2 +1,1 @@
-- Pass file path and line n by cmd line argument
-- checck for eof
+- build into lib
