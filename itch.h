@@ -38,7 +38,9 @@ static inline void print_u48_t(const char *name, u48_t b){
 		b_le[h] = b[l];
 		b_le[l] = b[h];
 	}
-	print_char_6_t(name, b_le);
+	printf("%s 0x", name);
+	for( int i = 5; i > -1; i--)printf("%02x", b_le[i]);
+	printf("\n");
 }
 
 static inline void print_price_4_t(const char *name, price_4_t b){ printf("%s 0x%08x\n",name,be32toh(b));}
