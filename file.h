@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#define ITCH_MSG_MAX_LEN 50 
+
 // Read n itch messages from binary file 
 // Used for testing
 int read_bin_file(FILE* fptr, uint32_t n);

@@ -4,7 +4,6 @@
 #include <endian.h>
 #include "itch.h"
 
-#define ITCH_MSG_MAX_LEN 50 
 int read_bin_file(FILE *fptr, uint32_t n){
 	uint32_t i;
 	uint16_t len; // payload lenght ( big endian )

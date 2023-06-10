@@ -3,7 +3,7 @@ XML=nasdaq_totalview_itch.xml
 SCRIPT=itch_msg_to_c.py
 
 
-FLAGS = -std=gnu99 -Wall -Wextra -Wconversion -Wshadow -Wundef -fno-common  -Wno-unused-parameter -Wno-type-limits
+FLAGS = -std=gnu99 -Wall -Wextra -Wconversion -Wshadow -Wundef -fno-common  -Wno-unused-parameter -Wno-type-limits -fpic
 CC = cc $(if $(debug),-DDEBUG -g)
 LD = cc
 
