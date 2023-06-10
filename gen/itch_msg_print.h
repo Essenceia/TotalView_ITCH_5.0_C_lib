@@ -59,9 +59,9 @@ printf("Message type : mwcb_decline_level\n");
 print_u16_t("stock_locate",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_stock_locate);
 print_u16_t("tracking_number",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_tracking_number);
 print_u48_t("timestamp",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_timestamp);
-print_char_t("level_1",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_level_1);
-print_char_t("level_2",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_level_2);
-print_char_t("level_3",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_level_3);
+print_price_8_t("level_1",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_level_1);
+print_price_8_t("level_2",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_level_2);
+print_price_8_t("level_3",itch_msg->itch_mwcb_decline_level_data.itch_mwcb_decline_level_level_3);
 }
 if(itch_msg->itch_mwcb_status_v) { 
 printf("Message type : mwcb_status\n");
@@ -78,7 +78,7 @@ print_u48_t("timestamp",itch_msg->itch_ipo_quoting_period_update_data.itch_ipo_q
 print_char_8_t("stock",itch_msg->itch_ipo_quoting_period_update_data.itch_ipo_quoting_period_update_stock);
 print_u32_t("ipo_quotation_release_time",itch_msg->itch_ipo_quoting_period_update_data.itch_ipo_quoting_period_update_ipo_quotation_release_time);
 print_char_t("ipo_quotation_release_qualifier",itch_msg->itch_ipo_quoting_period_update_data.itch_ipo_quoting_period_update_ipo_quotation_release_qualifier);
-print_char_t("ipo_price",itch_msg->itch_ipo_quoting_period_update_data.itch_ipo_quoting_period_update_ipo_price);
+print_price_4_t("ipo_price",itch_msg->itch_ipo_quoting_period_update_data.itch_ipo_quoting_period_update_ipo_price);
 }
 if(itch_msg->itch_luld_auction_collar_v) { 
 printf("Message type : luld_auction_collar\n");
@@ -86,9 +86,9 @@ print_u16_t("stock_locate",itch_msg->itch_luld_auction_collar_data.itch_luld_auc
 print_u16_t("tracking_number",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_tracking_number);
 print_u48_t("timestamp",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_timestamp);
 print_char_8_t("stock",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_stock);
-print_char_t("auction_collar_reference_price",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_auction_collar_reference_price);
-print_char_t("upper_auction_collar_price",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_upper_auction_collar_price);
-print_char_t("lower_auction_collar_price",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_lower_auction_collar_price);
+print_price_4_t("auction_collar_reference_price",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_auction_collar_reference_price);
+print_price_4_t("upper_auction_collar_price",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_upper_auction_collar_price);
+print_price_4_t("lower_auction_collar_price",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_lower_auction_collar_price);
 print_u32_t("auction_collar_extension",itch_msg->itch_luld_auction_collar_data.itch_luld_auction_collar_auction_collar_extension);
 }
 if(itch_msg->itch_operational_halt_v) { 
@@ -109,7 +109,7 @@ print_u64_t("order_reference_number",itch_msg->itch_add_order_data.itch_add_orde
 print_char_t("buy_sell_indicator",itch_msg->itch_add_order_data.itch_add_order_buy_sell_indicator);
 print_u32_t("shares",itch_msg->itch_add_order_data.itch_add_order_shares);
 print_char_8_t("stock",itch_msg->itch_add_order_data.itch_add_order_stock);
-print_char_t("price",itch_msg->itch_add_order_data.itch_add_order_price);
+print_price_4_t("price",itch_msg->itch_add_order_data.itch_add_order_price);
 }
 if(itch_msg->itch_add_order_with_mpid_v) { 
 printf("Message type : add_order_with_mpid\n");
@@ -120,7 +120,7 @@ print_u64_t("order_reference_number",itch_msg->itch_add_order_with_mpid_data.itc
 print_char_t("buy_sell_indicator",itch_msg->itch_add_order_with_mpid_data.itch_add_order_with_mpid_buy_sell_indicator);
 print_u32_t("shares",itch_msg->itch_add_order_with_mpid_data.itch_add_order_with_mpid_shares);
 print_char_8_t("stock",itch_msg->itch_add_order_with_mpid_data.itch_add_order_with_mpid_stock);
-print_char_t("price",itch_msg->itch_add_order_with_mpid_data.itch_add_order_with_mpid_price);
+print_price_4_t("price",itch_msg->itch_add_order_with_mpid_data.itch_add_order_with_mpid_price);
 print_char_4_t("attribution",itch_msg->itch_add_order_with_mpid_data.itch_add_order_with_mpid_attribution);
 }
 if(itch_msg->itch_order_executed_v) { 
@@ -141,7 +141,7 @@ print_u64_t("order_reference_number",itch_msg->itch_order_executed_with_price_da
 print_u32_t("executed_shares",itch_msg->itch_order_executed_with_price_data.itch_order_executed_with_price_executed_shares);
 print_u64_t("match_number",itch_msg->itch_order_executed_with_price_data.itch_order_executed_with_price_match_number);
 print_char_t("printable",itch_msg->itch_order_executed_with_price_data.itch_order_executed_with_price_printable);
-print_char_t("execution_price",itch_msg->itch_order_executed_with_price_data.itch_order_executed_with_price_execution_price);
+print_price_4_t("execution_price",itch_msg->itch_order_executed_with_price_data.itch_order_executed_with_price_execution_price);
 }
 if(itch_msg->itch_order_cancel_v) { 
 printf("Message type : order_cancel\n");
@@ -166,7 +166,7 @@ print_u48_t("timestamp",itch_msg->itch_order_replace_data.itch_order_replace_tim
 print_u64_t("original_order_reference_number",itch_msg->itch_order_replace_data.itch_order_replace_original_order_reference_number);
 print_u64_t("new_order_reference_number",itch_msg->itch_order_replace_data.itch_order_replace_new_order_reference_number);
 print_u32_t("shares",itch_msg->itch_order_replace_data.itch_order_replace_shares);
-print_char_t("price",itch_msg->itch_order_replace_data.itch_order_replace_price);
+print_price_4_t("price",itch_msg->itch_order_replace_data.itch_order_replace_price);
 }
 if(itch_msg->itch_trade_v) { 
 printf("Message type : trade\n");
@@ -177,7 +177,7 @@ print_u64_t("order_reference_number",itch_msg->itch_trade_data.itch_trade_order_
 print_char_t("buy_sell_indicator",itch_msg->itch_trade_data.itch_trade_buy_sell_indicator);
 print_u32_t("shares",itch_msg->itch_trade_data.itch_trade_shares);
 print_char_8_t("stock",itch_msg->itch_trade_data.itch_trade_stock);
-print_char_t("price",itch_msg->itch_trade_data.itch_trade_price);
+print_price_4_t("price",itch_msg->itch_trade_data.itch_trade_price);
 print_u64_t("match_number",itch_msg->itch_trade_data.itch_trade_match_number);
 }
 if(itch_msg->itch_cross_trade_v) { 
@@ -187,7 +187,7 @@ print_u16_t("tracking_number",itch_msg->itch_cross_trade_data.itch_cross_trade_t
 print_u48_t("timestamp",itch_msg->itch_cross_trade_data.itch_cross_trade_timestamp);
 print_u64_t("shares",itch_msg->itch_cross_trade_data.itch_cross_trade_shares);
 print_char_8_t("stock",itch_msg->itch_cross_trade_data.itch_cross_trade_stock);
-print_char_t("cross_price",itch_msg->itch_cross_trade_data.itch_cross_trade_cross_price);
+print_price_4_t("cross_price",itch_msg->itch_cross_trade_data.itch_cross_trade_cross_price);
 print_u64_t("match_number",itch_msg->itch_cross_trade_data.itch_cross_trade_match_number);
 print_char_t("cross_type",itch_msg->itch_cross_trade_data.itch_cross_trade_cross_type);
 }
@@ -207,9 +207,9 @@ print_u64_t("paired_shares",itch_msg->itch_net_order_imbalance_indicator_data.it
 print_u64_t("imbalance_shares",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_imbalance_shares);
 print_char_t("imbalance_direction",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_imbalance_direction);
 print_char_8_t("stock",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_stock);
-print_char_t("far_price",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_far_price);
-print_char_t("near_price",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_near_price);
-print_char_t("current_reference_price",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_current_reference_price);
+print_price_4_t("far_price",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_far_price);
+print_price_4_t("near_price",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_near_price);
+print_price_4_t("current_reference_price",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_current_reference_price);
 print_char_t("cross_type",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_cross_type);
 print_char_t("price_variation_indicator",itch_msg->itch_net_order_imbalance_indicator_data.itch_net_order_imbalance_indicator_price_variation_indicator);
 }

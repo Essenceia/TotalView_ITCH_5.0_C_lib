@@ -41,7 +41,7 @@ def parse_field(msg_name, field, struct_f,inst_name, print_f):
     if not( f_name == "message_type" ):
         sig_name = SIG_PREFIX+msg_name+"_"+f_name
         struct_f.write(f_type+" "+sig_name+";\n")
-        if "e" not in f_type :
+        if f_type[0] != "e" :
             print_f.write("print_"+f_type+'("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
         else:
             print_f.write('print_char_t("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
