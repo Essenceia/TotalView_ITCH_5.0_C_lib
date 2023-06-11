@@ -1,7 +1,8 @@
 GEN_DIR=gen
 XML=nasdaq_totalview_itch.xml
 SCRIPT=itch_msg_to_c.py
-
+RELEASE=release
+INC=inc
 
 FLAGS = -std=gnu99 -Wall -Wextra -Wconversion -Wshadow -Wundef -fno-common  -Wno-unused-parameter -Wno-type-limits -fpic
 CC = cc $(if $(debug),-DDEBUG -g)
@@ -27,10 +28,16 @@ itch.o: type.h itch.h itch.c itch_s.h gen_flag
 lib: itch.o file.o
 	ar rcs libitch.a itch.o file.o 
 
+release: lib
+	mkdir -p $(RELEASE)/$(INC)/$(GEN_DIR)
+	cp libitch.a $(RELEASE)/.
+	cp *.h $(RELEASE)/$(INC)
+	cp $(GEN_DIR)/*.h $(RELEASE)/$(INC)/$(GEN_DIR)
+
 clean:
 	rm gen_flag
 	rm -f ${GEN_DIR}/*.h
 	rm -f *.o	
 	rm -f *.a	
 	rm -f test
-
+	rm -fr $(RELEASE)
