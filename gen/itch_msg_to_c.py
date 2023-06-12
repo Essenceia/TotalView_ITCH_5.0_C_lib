@@ -11,6 +11,7 @@ ITCH_MSG_FILL_CASE_H = "itch_msg_fill_case.h"
 ITCH_MSG_PRINT_TYPE_H = "itch_msg_print_type.h"
 ITCH_MSG_PRINT_H = "itch_msg_print.h"
 ITCH_ENUM_H = "itch_msg_enum.h"
+ITCH_TB_PUT_H = "tb_itch_msg_put.h"
 
 SIG_PREFIX = "itch_"
 
@@ -19,7 +20,7 @@ CASE_D_PTR = "data"
 
 PRINT_S_PRT = "itch_msg"
 
-def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, print_type_f, print_f):
+def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, print_type_f, print_f, put_f):
     #sig_name = SIG_PREFIX + msg_name + "_v_o"
     sig_name = SIG_PREFIX + msg_name + "_v"
     inst_name = SIG_PREFIX + msg_name + "_data"
@@ -30,9 +31,11 @@ def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, prin
     case_f.write("\ncase '"+msg_id+"': \n"+ db_check+ ";\n"+ CASE_S_PTR+"->"+ sig_name +"=1;\nmemcpy(&"+CASE_S_PTR+"->"+inst_name +","+ CASE_D_PTR +","+str(int(msg_len)-1) +");\nbreak;\n ")
     print_type_f.write("if("+PRINT_S_PRT+"->"+sig_name+') printf("Message type : '+msg_name+'\\n");\n')
     print_f.write("if("+PRINT_S_PRT+"->"+sig_name+') { \nprintf("Message type : '+msg_name+'\\n");\n')
+    
+    put_f.write("tb_vpi_logic_put_1b(argv,"+CASE_S_PTR+"->"+sig_name+");\n")
     return inst_name
 
-def parse_field(msg_name, field, struct_f,inst_name, print_f):
+def parse_field(msg_name, field, struct_f,inst_name, print_f, put_f):
     f_name = field['@name']
     f_len  = field['@len']
     f_offset = field['@offset']
@@ -43,8 +46,10 @@ def parse_field(msg_name, field, struct_f,inst_name, print_f):
         struct_f.write(f_type+" "+sig_name+";\n")
         if f_type[0] != "e" :
             print_f.write("print_"+f_type+'("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
+            put_f.write("tb_vpi_logic_put_"+str(int(f_len)*8)+"b(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
         else:
             print_f.write('print_char_t("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
+            put_f.write("tb_vpi_logic_put_8b(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
     return sig_name
 
 def parse_enum(enums, enum_f):
@@ -71,7 +76,7 @@ def main():
     print_type_f = open(ITCH_MSG_PRINT_TYPE_H,"w")
     print_f = open(ITCH_MSG_PRINT_H,"w")
     enum_f = open(ITCH_ENUM_H,"w")
-   
+    put_f = open(ITCH_TB_PUT_H, "w") 
     # Parse XML
     content = xmltodict.parse(my_xml)
     
@@ -85,12 +90,12 @@ def main():
         msg_name=struct['@name']
         msg_id=struct['@id']
         msg_len=struct['@len']
-        inst_name = parse_valid(msg_name , msg_id, msg_len, struct_f, struct_head_f, case_f, print_type_f, print_f )
+        inst_name = parse_valid(msg_name , msg_id, msg_len, struct_f, struct_head_f, case_f, print_type_f, print_f, put_f  )
         # clear list
         for field in struct['Field']:
             #print(type(field))
             if type(field) is dict:
-                parse_field(msg_name, field,struct_f, inst_name, print_f)
+                parse_field(msg_name, field,struct_f, inst_name, print_f, put_f)
             else:
                 assert(0)
         # add end of struct
