@@ -11,24 +11,39 @@ int read_bin_file(FILE *fptr, uint32_t n){
 	char buff[ITCH_MSG_MAX_LEN];
 	size_t ret;
 	tv_itch5_s itch_msg;
-	// read
+	#ifdef DEBUG
+	FILE *db_fptr;
+	fpos_t db_save_pos;
+	#endif// read
 	for( i = 0; i < n; i++){
+		
 		ret = fread(&len, sizeof(len), 1, fptr);
 		// convert to little endiant
 		len = be16toh(len);
-
+		
+		#ifdef DEBUG
+		db_fptr = fptr;
+		fgetpos(db_fptr, &db_save_pos);
+		fread(&buff, sizeof(char), len, db_fptr);
+		printf("raw data :\n");
+		for(int p=(int)len-1; p >-1; p--){
+			printf("byte %02d %02hhx (%c)\n",p, buff[p], (isalpha(buff[p])? buff[p] : ' ')) ;
+		}
+		fsetpos(fptr, &db_save_pos); 
+		#endif
+		
 		ret = fread(&type, sizeof(type), 1, fptr);
 		if ( !ret ) return 1;	
 
-		#ifdef DEBUF	
+		#ifdef DEBUG	
 		printf("len %d,type %c, ret %ld\n", len, type,ret);
 		#endif
 
 		// read rest of message
 		if ( len-1 > ITCH_MSG_MAX_LEN ) return 1;
-		ret = fread(buff, sizeof(buff[0]), len-1, fptr);
+		ret = fread(buff, sizeof(char), len-1, fptr);
 		if ( !ret ) return 1; 
-
+	
 		ret = (size_t)fill_tv_itch5( type, buff, len-1, &itch_msg);
 		if ( ret ) return 1;
 
@@ -47,5 +62,11 @@ size_t get_next_bin_msg(FILE *fptr, uint8_t *buff, size_t buff_len){
 	if ( len <= buff_len ){
 		ret = fread(buff, sizeof(uint8_t), len, fptr);
 	}
-	return ret; 
+	#ifdef DEBUG
+	printf("raw data :\n");
+	for(int i=(int)len-1; i >-1; i--){
+		printf("byte %d %#x\n",i, ((char*)buff)[i]);
+	}
+	#endif // DEBUG
+	printf("\n");return ret; 
 }
