@@ -36,7 +36,7 @@ def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, prin
     print_type_f.write("if("+PRINT_S_PRT+"->"+sig_name+') printf("Message type : '+msg_name+'\\n");\n')
     print_f.write("if("+PRINT_S_PRT+"->"+sig_name+') { \nprintf("Message type : '+msg_name+'\\n");\n')
     
-    put_f.write("tb_vpi_logic_put_1b(argv,"+CASE_S_PTR+"->"+sig_name+");\n")
+    put_f.write("tb_vpi_put_logic_u8_t(argv,"+CASE_S_PTR+"->"+sig_name+");\n")
     return inst_name
 
 def parse_field(msg_name, field, struct_f,inst_name, print_f, put_f, put_arg_f):
@@ -51,10 +51,10 @@ def parse_field(msg_name, field, struct_f,inst_name, print_f, put_f, put_arg_f):
         put_arg_f.write(sig_name+",\n")
         if f_type[0] != "e" :
             print_f.write("print_"+f_type+'("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
-            put_f.write("tb_vpi_logic_put_"+str(int(f_len)*8)+"b(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
+            put_f.write("tb_vpi_put_logic_"+f_type+"(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
         else:
             print_f.write('print_char_t("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
-            put_f.write("tb_vpi_logic_put_8b(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
+            put_f.write("tb_vpi_put_logic_char_t(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
     return sig_name
 
 def parse_enum(enums, enum_f):
