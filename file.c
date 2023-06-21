@@ -41,13 +41,15 @@ int read_bin_file(FILE *fptr, uint32_t n){
 
 		// read rest of message
 		if ( len-1 > ITCH_MSG_MAX_LEN ) return 1;
-		ret = fread(buff, sizeof(char), len-1, fptr);
+		ret = fread(&buff, sizeof(char), len-1, fptr);
 		if ( !ret ) return 1; 
-	
+		
 		ret = (size_t)fill_tv_itch5( type, buff, len-1, &itch_msg);
 		if ( ret ) return 1;
-
+		
+		#ifdef DEBUG
 		print_tv_itch5(&itch_msg);
+		#endif
 		if ( feof( fptr ) )return 0;
 	}
 	return 0;
@@ -57,16 +59,28 @@ int read_bin_file(FILE *fptr, uint32_t n){
 size_t get_next_bin_msg(FILE *fptr, uint8_t *buff, size_t buff_len){
 	size_t ret = 0; // next message size
 	uint16_t len;
+
+	#ifdef FPOS
+	long int pos = ftell(fptr);
+	printf("fpos : %ld\n", pos);
+	#endif
+
 	fread(&len, sizeof(len),1, fptr);
 	len = be16toh(len);// convert from big endian to whatever we are using
 	if ( len <= buff_len ){
 		ret = fread(buff, sizeof(uint8_t), len, fptr);
+	}else{
+	fprintf(stderr, "unexpected buffer length, got %d, max accepted %ld\n", len, buff_len);
 	}
 	#ifdef DEBUG
+	printf("get_next_bin_msg len %ld, buff_len %ld\n", len, buff_len);
+	assert(len <= buff_len);
 	printf("raw data :\n");
 	for(int i=(int)len-1; i >-1; i--){
 		printf("byte %d %#x\n",i, ((char*)buff)[i]);
 	}
+	printf("\n");
 	#endif // DEBUG
-	printf("\n");return ret; 
+
+	return ret; 
 }

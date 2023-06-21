@@ -1,3 +1,11 @@
+ifndef debug
+#debug := 
+endif
+
+ifndef fpos
+#fpos :=
+endif
+
 GEN_DIR=gen
 XML=nasdaq_totalview_itch.xml
 SCRIPT=itch_msg_to_c.py
@@ -5,7 +13,7 @@ RELEASE=release
 INC=inc
 
 FLAGS = -std=gnu99 -Wall -Wextra -Wconversion -Wshadow -Wundef -fno-common  -Wno-unused-parameter -Wno-type-limits -fpic
-CC = cc $(if $(debug),-DDEBUG -g)
+CC = cc $(if $(debug),-DDEBUG -DFPOS -g) $(if $(fpos),-DFPOS)
 LD = cc
 
 test : test.o file.o itch.o

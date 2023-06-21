@@ -21,6 +21,12 @@ make lib
 make lib debug=1
 ```
 
+(optional) Enable only the printing of the file pos on each read and none of
+    the other debug informaiton.
+```
+make lib fpos=1
+```
+
 ## Build test
 
 To build the test case :
