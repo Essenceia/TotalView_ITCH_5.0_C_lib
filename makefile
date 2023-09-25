@@ -43,9 +43,10 @@ release: lib
 	cp $(GEN_DIR)/*.h $(RELEASE)/$(INC)/$(GEN_DIR)
 
 clean:
-	rm gen_flag
+	rm -f gen_flag
 	rm -f ${GEN_DIR}/*.h
 	rm -f *.o	
 	rm -f *.a	
+	rm -f vgcore.*
 	rm -f test
 	rm -fr $(RELEASE)
