@@ -2,7 +2,7 @@ import xmltodict
 import pprint
 import sys
 import math
-
+import re
 # conf list
 FLAT_STRUCT_H = "flat_struc.h"
 ITCH_MSG_STRUCT_INNER_H = "itch_msg_struct_inner.h"
@@ -29,10 +29,13 @@ def parse_valid(msg_name, msg_id, msg_len, struct_f, struct_head_f, case_f, prin
     inst_name = SIG_PREFIX + msg_name + "_data"
     sig_type = "bool"
     db_check = "exp_len = "+str(int(msg_len)-1)
-    struct_f.write("\nstruct {\n")
+    struct_f.write("\nstruct __attribute__((__packed__)){\n")
     struct_head_f.write(sig_type+" "+sig_name+";\n")
     put_arg_f.write(sig_name+",\n")
-    case_f.write("\ncase '"+msg_id+"': \n"+ db_check+ ";\n"+ CASE_S_PTR+"->"+ sig_name +"=1;\nmemcpy(&"+CASE_S_PTR+"->"+inst_name +","+ CASE_D_PTR +","+str(int(msg_len)-1) +");\nbreak;\n ")
+    case_f.write("\ncase '"+msg_id+"': \n"
+    + db_check+ ";\n"+ CASE_S_PTR+"->"+ sig_name +"=1;\n"
+    +"memcpy(&"+CASE_S_PTR+"->"+inst_name +","+ CASE_D_PTR +",sizeof("+CASE_S_PTR+"->"+inst_name +"));\n"
+    +"break;\n ")
     print_type_f.write("if("+PRINT_S_PRT+"->"+sig_name+') printf("Message type : '+msg_name+'\\n");\n')
     print_f.write("if("+PRINT_S_PRT+"->"+sig_name+') { \nprintf("Message type : '+msg_name+'\\n");\n')
     
@@ -47,14 +50,16 @@ def parse_field(msg_name, field, struct_f,inst_name, print_f, put_f, put_arg_f):
     sig_name = ""
     if not( f_name == "message_type" ):
         sig_name = SIG_PREFIX+msg_name+"_"+f_name
-        struct_f.write(f_type+" "+sig_name+";\n")
         put_arg_f.write(sig_name+",\n")
-        if f_type[0] != "e" :
+        print("match %s res : %s",f_type,str(re.match(r"e[A-Z]", f_type)))
+        if not ( re.match(r"e[A-Z]", f_type )) :
             print_f.write("print_"+f_type+'("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
             put_f.write("tb_vpi_put_logic_"+f_type+"(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
+            struct_f.write(f_type+" "+sig_name+";\n")
         else:
             print_f.write('print_char_t("'+f_name+'",'+PRINT_S_PRT+"->"+inst_name+"."+sig_name+");\n")
             put_f.write("tb_vpi_put_logic_char_t(argv,"+CASE_S_PTR+"->"+inst_name+"."+sig_name+");\n")
+            struct_f.write("char_t "+sig_name+";\n")
     return sig_name
 
 def parse_enum(enums, enum_f):
